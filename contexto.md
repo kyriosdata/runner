@@ -2,22 +2,108 @@
 
 ## 1. Visão geral
 
-Este documento define o contexto e escopo do trabalho prático da disciplina de Implementação e Integração do Bacharelado em Engenharia de Software (2026). O trabalho visa proporcionar aos estudantes a oportunidade de prática de construção de software.
+Este documento define o contexto e escopo do trabalho prático da disciplina de Implementação e Integração do Bacharelado em Engenharia de Software (2026). O trabalho visa proporcionar aos estudantes a oportunidade de prática de construção de software por meio do desenvolvimento do Sistema Assinador.
 
-## 2. Objetivos
+## 2. Objetivos do Sistema Assinador
 
-- Uma aplicação multiplataforma via linha de comandos (CLI)
-- Integração entre aplicações
-- Validação de parâmetros e tratamento de erros
-- Simulação de funcionalidades complexas
+Implementar acesso à funcionalidade de criação e validação de 
+assinatura digital via linha de comandos. 
 
-## 3. Descrição do sistema
+### Diagrama de Contexto
 
-O sistema é composto por **duas aplicações** que trabalham de forma integrada:
+```
+┌─────────────────┐                              ┌─────────────────────┐
+│                 │                              │                     │
+│    Usuário      │                              │  Dispositivo de     │
+│                 │                              │  Assinatura Digital │
+└────────┬────────┘                              │  (Token/Smart Card) │
+         │                                       └──────────┬──────────┘
+         │ Comandos CLI                                     │
+         │ (criar, validar)                                 │ Operações
+         │                                                  │ criptográficas
+         │                                                  │
+         ▼                                                  ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                                                                        │
+│                      Sistema Assinador                                 │
+│                                                                        │
+│  Funcionalidades:                                                      │
+│  • Criação de assinaturas digitais                                     │
+│  • Validação de assinaturas digitais                                   │
+│                                                                        │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+**Atores e Sistemas Externos:**
+
+| Elemento | Tipo | Descrição |
+|----------|------|-----------|
+| Usuário | Ator | Pessoa que interage com o sistema via linha de comandos |
+| Dispositivo de Assinatura Digital | Sistema Externo | Hardware criptográfico (token USB, smart card) que armazena certificados e executa operações de assinatura |
+| Sistema Assinador | Sistema | Aplicação que orquestra as operações de assinatura digital |
+
+## 3. Identificação de contêineres
+
+O sistema é composto por duas aplicações que trabalham de forma integrada: a aplicação
+**assinatura** e a aplicação **assinador.jar**.
+
+### Diagrama de Contêineres
+
+```
+┌─────────────────┐                                        ┌─────────────────────┐
+│                 │                                        │                     │
+│    Usuário      │                                        │  Dispositivo de     │
+│                 │                                        │  Assinatura Digital │
+└────────┬────────┘                                        │  (Token/Smart Card) │
+         │                                                 └──────────▲──────────┘
+         │ Comandos CLI                                               │
+         │ (criar, validar)                                           │ PKCS#11
+         │                                                            │ (operações
+         ▼                                                            │ criptográficas)
+┌────────────────────────────────────────┐                            │
+│                                        │                            │
+│   assinatura (CLI)                     │                            │
+│                                        │                            │
+│   Tecnologia: A definir                │                            │
+│   (Python, Go, Rust, Node.js)          │                            │
+│                                        │                            │
+│   Responsabilidades:                   │                            │
+│   • Receber comandos do usuário        │                            │
+│   • Validar sintaxe dos parâmetros     │                            │
+│   • Formatar saída para o usuário      │                            │
+│                                        │                            │
+└────────────────┬───────────────────────┘                            │
+                 │                                                    │
+                 │ Invoca/Requisita                                   │
+                 │ (CLI ou HTTP)                                      │
+                 │                                                    │
+                 ▼                                                    │
+┌────────────────────────────────────────┐                            │
+│                                        │                            │
+│   assinador.jar                        │                            │
+│                                        │                            │
+│   Tecnologia: Java 11+ (JAR)           │                            │
+│                                        │                            │
+│   Responsabilidades:                   │                            │
+│   • Validar parâmetros de entrada      │                            │
+│   • Interagir com dispositivo cripto   │────────────────────────────┘
+│   • Executar operações de assinatura   │
+│   • Retornar resultados estruturados   │
+│                                        │
+└────────────────────────────────────────┘
+```
+
+**Comunicação entre Contêineres:**
+
+| Origem | Destino | Protocolo | Descrição |
+|--------|---------|-----------|-----------|
+| Usuário | assinatura | CLI | Comandos digitados no terminal |
+| assinatura | assinador.jar | CLI ou HTTP | Invocação direta ou requisição HTTP (conforme modo de execução) |
+| assinador.jar | Dispositivo Criptográfico | PKCS#11 | Interface padrão para comunicação com tokens e smart cards |
 
 ### 3.1. Aplicação assinatura
 
-**Descrição:** interface via linha de comandos (console) para interação com usuários humanos.
+Interface via linha de comandos (console) para interação com usuários humanos.
 
 **Características:**
 - Multiplataforma (Windows, Linux e macOS)
@@ -33,11 +119,11 @@ O sistema é composto por **duas aplicações** que trabalham de forma integrada
 
 ### 3.2. Aplicação assinador.jar
 
-**Descrição:** aplicação Java que valida parâmetros de entrada e simula a criação e validação de assinaturas digitais.
+Aplicação Java que valida parâmetros de entrada e simula a criação e validação de assinaturas digitais.
 
 **Características:**
 - Implementada em Java (arquivo .jar)
-- Não realiza assinatura digital real (apenas simulação)
+- Não realiza assinatura digital real (nem cria nem valida, apenas simula)
 - Valida parâmetros de entrada
 - Retorna respostas pré-construídas
 - Suporta dois modos de execução:
@@ -52,112 +138,11 @@ O sistema é composto por **duas aplicações** que trabalham de forma integrada
   - Para **validação de assinatura**: retornar indicação de sucesso ou falha no formato esperado
 - Garantir que todos os parâmetros estejam corretos antes de processar
 
-## 4. Modelo C4 - Diagramas de Arquitetura
+## 4. Funcionalidades
 
-### 4.1. Diagrama de Contexto (Nível 1)
-
-```
-                                    ┌─────────────────┐
-                                    │                 │
-                                    │    Usuário      │
-                                    │                 │
-                                    └────────┬────────┘
-                                             │
-                                             │ Interage via
-                                             │ linha de comandos
-                                             │
-                                             ▼
-                    ┌────────────────────────────────────────┐
-                    │                                        │
-                    │   Sistema de Assinatura Digital       │
-                    │          (Simulado)                    │
-                    │                                        │
-                    │  - Criar assinaturas digitais         │
-                    │  - Validar assinaturas digitais       │
-                    │                                        │
-                    └────────────────────────────────────────┘
-                                             │
-                                             │ Baseado em
-                                             │ especificações
-                                             ▼
-                    ┌────────────────────────────────────────┐
-                    │                                        │
-                    │  Especificações FHIR Saúde GO         │
-                    │  (Parâmetros de Assinatura)           │
-                    │                                        │
-                    └────────────────────────────────────────┘
-```
-
-**Descrição do Contexto:**
-- **Usuário**: Pessoa que utiliza o sistema através de comandos de terminal
-- **Sistema de Assinatura Digital**: O sistema completo que simula operações de assinatura digital
-- **Especificações FHIR**: Define os parâmetros precisos para criação e validação de assinaturas
-
-### 4.2. Diagrama de Contêiner (Nível 2)
-
-```
-                                    ┌─────────────────┐
-                                    │                 │
-                                    │    Usuário      │
-                                    │                 │
-                                    └────────┬────────┘
-                                             │
-                                             │ Comandos CLI
-                                             │ (criar, validar)
-                                             │
-                                             ▼
-                    ┌────────────────────────────────────────┐
-                    │                                        │
-                    │      Assinador (Aplicação CLI)        │
-                    │                                        │
-                    │  - Aplicação multiplataforma           │
-                    │  - Interface de linha de comandos      │
-                    │  - Valida entrada do usuário          │
-                    │  - Formata saída para o usuário       │
-                    │                                        │
-                    │  Tecnologia: A definir                 │
-                    │  Plataformas: Windows, Linux, macOS    │
-                    │                                        │
-                    └──────────────┬─────────────────────────┘
-                                   │
-                                   │ Invoca com
-                                   │ parâmetros
-                                   │ validados
-                                   │
-                                   ▼
-                    ┌────────────────────────────────────────┐
-                    │                                        │
-                    │   Assinatura.jar (Aplicação Java)     │
-                    │                                        │
-                    │  - Valida parâmetros de entrada       │
-                    │  - Trata erros e exceções             │
-                    │  - Simula criação de assinatura       │
-                    │  - Simula validação de assinatura     │
-                    │  - Retorna respostas pré-construídas  │
-                    │                                        │
-                    │  Tecnologia: Java (JAR executável)     │
-                    │                                        │
-                    └────────────────────────────────────────┘
-```
-
-**Descrição dos Contêineres:**
-
-1. **Assinador (Aplicação CLI)**
-   - Tipo: Aplicação de linha de comandos
-   - Função: Interface para o usuário humano
-   - Comunicação: Invoca assinatura.jar via linha de comandos
-
-2. **Assinatura.jar (Aplicação Java)**
-   - Tipo: Aplicação Java executável
-   - Função: Motor de simulação de assinaturas digitais
-   - Comunicação: Recebe parâmetros e retorna resultados
-
-## 5. Funcionalidades
-
-### 5.1. Criar Assinatura Digital (Simulada)
+### 5.1. Criar assinatura digital (simulação)
 
 **Entrada:**
-- Parâmetros conforme especificação FHIR para criação de assinatura
 - Referência: [caso-de-uso-criar-assinatura.html](https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-criar-assinatura.html)
 
 **Processamento:**
@@ -167,13 +152,12 @@ O sistema é composto por **duas aplicações** que trabalham de forma integrada
 4. Se inválido: retornar mensagem de erro apropriada
 
 **Saída:**
-- Sucesso: Assinatura digital simulada (pré-construída)
-- Falha: Mensagem de erro indicando o problema
+- Sucesso: assinatura digital simulada (pré-construída)
+- Falha: mensagem de erro indicando o problema
 
-### 5.2. Validar Assinatura Digital (Simulada)
+### 5.2. Validar assinatura digital (simulação)
 
 **Entrada:**
-- Parâmetros conforme especificação FHIR para validação de assinatura
 - Referência: [caso-de-uso-validar-assinatura.html](https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-validar-assinatura.html)
 
 **Processamento:**
@@ -186,67 +170,67 @@ O sistema é composto por **duas aplicações** que trabalham de forma integrada
 - Sucesso: Indicação se a assinatura é válida ou inválida (simulado)
 - Falha: Mensagem de erro indicando o problema
 
-## 6. Requisitos Técnicos
+## 5. Requisitos técnicos
 
-### 6.1. Aplicação Assinador
+### 6.1. Aplicação assinatura
 
-**Requisitos Funcionais:**
+**Requisitos funcionais:**
 - RF01: Deve funcionar em Windows, Linux e macOS
 - RF02: Deve fornecer interface via linha de comandos
-- RF03: Deve validar entrada do usuário antes de invocar assinatura.jar
+- RF03: Deve validar entrada do usuário antes de invocar assinador.jar
 - RF04: Deve apresentar resultados de forma legível ao usuário
 - RF05: Deve tratar erros e apresentar mensagens apropriadas
 
-**Requisitos Não-Funcionais:**
+**Requisitos não-funcionais:**
 - RNF01: Deve ser fácil de instalar e executar
 - RNF02: Deve ter documentação clara de uso
 - RNF03: Mensagens de erro devem ser claras e acionáveis
 
-### 6.2. Aplicação Assinatura.jar
+### 6.2. Aplicação assinador.jar
 
-**Requisitos Funcionais:**
+**Requisitos funcionais:**
 - RF01: Deve validar rigorosamente todos os parâmetros de entrada
 - RF02: Deve implementar operação de criação de assinatura (simulada)
 - RF03: Deve implementar operação de validação de assinatura (simulada)
 - RF04: Deve retornar erros claros quando parâmetros são inválidos
 - RF05: Deve seguir as especificações FHIR para parâmetros
 
-**Requisitos Não-Funcionais:**
+**Requisitos não-funcionais:**
 - RNF01: Deve ser executável em qualquer sistema com JVM
 - RNF02: Deve ter tratamento robusto de erros
 - RNF03: Deve retornar resultados em formato estruturado
 
-## 7. Integração entre Aplicações
+## 6. Integração entre Aplicações
 
 ### 7.1. Fluxo de Criação de Assinatura
 
 ```
-Usuário → Assinador → assinatura.jar → Assinador → Usuário
+Usuário → assinatura → assinador.jar → assinatura → Usuário
 
 1. Usuário: Executa comando para criar assinatura
-2. Assinador: Valida entrada do usuário
-3. Assinador: Invoca assinatura.jar com parâmetros
-4. Assinatura.jar: Valida parâmetros
-5. Assinatura.jar: Retorna assinatura simulada
-6. Assinador: Formata resultado
-7. Assinador: Apresenta ao usuário
+2. assinatura: valida entrada do usuário
+3. assinatura: invoca assinador.jar com parâmetros
+4. assinador.jar: valida parâmetros
+5. assinador.jar: retorna assinatura simulada
+6. assinatura: formata resultado
+7. assinatura: apresenta ao usuário
 ```
 
 ### 7.2. Fluxo de Validação de Assinatura
 
 ```
-Usuário → Assinador → assinatura.jar → Assinador → Usuário
+Usuário → assinatura → assinador.jar → assinatura → Usuário
 
 1. Usuário: Executa comando para validar assinatura
-2. Assinador: Valida entrada do usuário
-3. Assinador: Invoca assinatura.jar com parâmetros
-4. Assinatura.jar: Valida parâmetros
-5. Assinatura.jar: Retorna resultado simulado
-6. Assinador: Formata resultado
-7. Assinador: Apresenta ao usuário
+2. assinatura: valida entrada do usuário
+3. assinatura: invoca assinador.jar com parâmetros
+4. assinador.jar: valida parâmetros
+5. assinador.jar: retorna resultado simulado
+6. assinatura: formata resultado
+7. assinatura: apresenta ao usuário
 ```
 
-### 7.3. Tratamento de Erros
+### 7.3. Tratamento de erros
 
 Em qualquer ponto do fluxo, erros devem ser:
 - Capturados apropriadamente
@@ -254,52 +238,53 @@ Em qualquer ponto do fluxo, erros devem ser:
 - Apresentados ao usuário de forma clara
 - Incluir informação suficiente para correção
 
-## 8. Parâmetros de Entrada
+## 7. Parâmetros de entrada
 
 Os parâmetros para as operações de criação e validação de assinatura digital estão definidos de forma precisa nas especificações FHIR:
 
-### 8.1. Parâmetros para Criar Assinatura
+### 8.1. Parâmetros para criar Assinatura
 - **Referência**: https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-criar-assinatura.html
-- **Descrição**: Define todos os parâmetros necessários para solicitar a criação de uma assinatura digital
+- **Descrição**: define todos os parâmetros necessários para solicitar a criação de uma assinatura digital
 
-### 8.2. Parâmetros para Validar Assinatura
+### 8.2. Parâmetros para validar Assinatura
 - **Referência**: https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-validar-assinatura.html
-- **Descrição**: Define todos os parâmetros necessários para solicitar a validação de uma assinatura digital
+- **Descrição**: define todos os parâmetros necessários para solicitar a validação de uma assinatura digital
 
-**Observação**: A implementação deve seguir rigorosamente estas especificações para garantir compatibilidade e corretude.
-
-## 9. Escopo do Trabalho Prático
+## 8. Escopo 
 
 ### 9.1. O que ESTÁ no Escopo
 
-✅ Desenvolvimento da aplicação Assinador (CLI multiplataforma)
-✅ Desenvolvimento da aplicação assinatura.jar
-✅ Integração entre as duas aplicações
-✅ Validação rigorosa de parâmetros
-✅ Simulação de criação de assinatura
-✅ Simulação de validação de assinatura
-✅ Tratamento de erros e exceções
-✅ Testes das funcionalidades
-✅ Documentação de uso
+- ✅ Desenvolvimento da aplicação assinatura (CLI multiplataforma)
+- ✅ Desenvolvimento da aplicação assinador.jar
+- ✅ Integração entre as duas aplicações
+- ✅ Validação rigorosa de parâmetros
+- ✅ Simulação de criação de assinatura
+- ✅ Simulação de validação de assinatura
+- ✅ Tratamento de erros e exceções
+- ✅ Testes das funcionalidades
+- ✅ Documentação de uso
 
 ### 9.2. O que NÃO ESTÁ no Escopo
 
-❌ Implementação real de assinatura digital criptográfica
-❌ Integração com autoridades certificadoras
-❌ Armazenamento persistente de assinaturas
-❌ Interface gráfica (GUI - Graphical User Interface)
-❌ API web ou serviços REST
-❌ Autenticação de usuários
-❌ Geração real de certificados digitais
+- ❌ Implementação real de assinatura digital criptográfica
+- ❌ Integração com autoridades certificadoras
+- ❌ Armazenamento persistente de assinaturas
+- ❌ Interface gráfica (GUI - Graphical User Interface)
+- ❌ API web ou serviços REST
+- ❌ Autenticação de usuários
+- ❌ Geração real de certificados digitais
 
-## 10. Entregáveis
+## 9. Entregáveis
 
-1. **Código-fonte da aplicação Assinador**
+Devem ser confeccionados e disponibilizado ao longo da disciplina
+no repositório correspondente (GitHub).
+
+1. **Código-fonte da aplicação assinatura**
    - Implementação completa
    - Compatível com Windows, Linux e macOS
    - Código bem documentado
 
-2. **Código-fonte da aplicação assinatura.jar**
+2. **Código-fonte da aplicação assinador.jar**
    - Implementação em Java
    - Validação completa de parâmetros
    - Simulação das operações
@@ -310,7 +295,7 @@ Os parâmetros para as operações de criação e validação de assinatura digi
    - Casos de teste para cenários de erro
 
 4. **Documentação**
-   - Manual de usuário para Assinador
+   - Manual de usuário para assinatura
    - Documentação técnica da integração
    - Exemplos de uso
    - Guia de instalação
@@ -320,7 +305,16 @@ Os parâmetros para as operações de criação e validação de assinatura digi
    - Diagramas C4
    - Requisitos documentados
 
-## 11. Considerações de Implementação
+6. **Artefatos executáveis**
+   - Binários pré-compilados para as três plataformas suportadas:
+     - `assinatura-windows-amd64.exe` (Windows)
+     - `assinatura-linux-amd64` (Linux)
+     - `assinatura-darwin-amd64` (macOS)
+   - Distribuídos via **GitHub Releases**
+   - Cada release deve conter checksums (SHA256) para verificação de integridade
+   - Versionamento semântico (SemVer) para controle de releases
+
+## 10. Considerações de Implementação
 
 ### 11.1. Simulação
 
@@ -328,19 +322,6 @@ Como o sistema **simula** operações de assinatura digital:
 - **Para criação**: Prepare assinaturas de exemplo pré-construídas que podem ser retornadas quando os parâmetros são válidos
 - **Para validação**: Implemente lógica simples que sempre retorna um resultado pré-determinado (válido/inválido) baseado em critérios simples
 - **Foco na validação**: A maior parte do esforço deve estar em validar corretamente os parâmetros de entrada
-
-### 11.2. Tecnologias Sugeridas
-
-**Para Assinador:**
-- Python (com bibliotecas como Click ou argparse)
-- Go (com Cobra)
-- Rust (com Clap)
-- Node.js (com Commander)
-
-**Para assinatura.jar:**
-- Java 11+ (LTS - Long Term Support)
-- Maven ou Gradle para construção (build)
-- JUnit para testes
 
 ### 11.3. Padrões de Qualidade
 
@@ -350,17 +331,7 @@ Como o sistema **simula** operações de assinatura digital:
 - Documentação clara
 - Mensagens de erro úteis
 
-## 12. Cronograma e Fases
-
-O desenvolvimento será realizado de forma **paulatina**, ao longo da disciplina:
-
-**Fase 1**: Especificação e planejamento (este documento)
-**Fase 2**: Implementação do assinatura.jar
-**Fase 3**: Implementação do Assinador
-**Fase 4**: Integração e testes
-**Fase 5**: Documentação e refinamentos
-
-## 13. Referências
+## 11. Referências
 
 1. **Especificações FHIR - Segurança**
    - [Caso de Uso: Criar Assinatura](https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-criar-assinatura.html)
@@ -376,23 +347,3 @@ O desenvolvimento será realizado de forma **paulatina**, ao longo da disciplina
    - Tratamento adequado de erros
    - Documentação de help integrada
 
-## 14. Glossário
-
-- **Assinador**: Aplicação de linha de comandos que serve como interface para o usuário
-- **assinatura.jar**: Aplicação Java que simula operações de assinatura digital
-- **Assinatura Digital**: No contexto deste trabalho, uma simulação de assinatura criptográfica
-- **FHIR**: Fast Healthcare Interoperability Resources - Recursos de Interoperabilidade Rápida em Saúde, padrão para troca de informações de saúde
-- **CLI**: Command Line Interface - Interface de Linha de Comandos
-- **GUI**: Graphical User Interface - Interface Gráfica do Usuário
-- **API**: Application Programming Interface - Interface de Programação de Aplicações
-- **REST**: Representational State Transfer - Transferência de Estado Representacional
-- **JAR**: Java Archive - Formato de arquivo executável Java
-- **LTS**: Long Term Support - Suporte de Longo Prazo
-- **Simulação**: Comportamento que imita a operação real sem executar a lógica criptográfica complexa
-
----
-
-**Versão**: 1.0  
-**Data**: 2026  
-**Disciplina**: Implementação e Integração  
-**Curso**: Bacharelado em Engenharia de Software

@@ -35,7 +35,7 @@ Ao contribuir com este projeto, você deve atuar como um **Engenheiro de Softwar
    - Mantenha consistência com o estilo do projeto
 
 3. **Arquitetura**
-   - Respeite a separação de responsabilidades definida (Assinador CLI ↔ assinador.jar)
+   - Respeite a separação de responsabilidades definida (assinatura ↔ assinador.jar)
    - Considere extensibilidade e evolução futura
    - Justifique trade-offs quando houver múltiplas alternativas
 
@@ -48,7 +48,7 @@ Ao contribuir com este projeto, você deve atuar como um **Engenheiro de Softwar
 
 Este é um trabalho prático da disciplina de **Implementação e Integração** do Bacharelado em Engenharia de Software. O objetivo é desenvolver um sistema de assinatura digital simulada composto por duas aplicações integradas:
 
-- **Assinador**: CLI multiplataforma (interface para o usuário)
+- **assinatura**: CLI multiplataforma (interface para o usuário)
 - **assinador.jar**: aplicação Java que simula operações de assinatura digital
 
 Consulte o arquivo `contexto.md` para detalhes completos sobre escopo, requisitos e arquitetura.

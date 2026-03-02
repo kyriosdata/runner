@@ -15,7 +15,7 @@ Implementar acesso à funcionalidade de execução de aplicações Java via linh
 3. O sistema deve ser capaz de gerir o ciclo de vida de execução do Simulador do HubSaúde, uma aplicação Java real (**simulador.jar**), doravante denominado de Simulador. Este simulador não será desenvolvido como parte do Sistema Runner.
 4. O sistema deve ser capaz de baixar o JDK necessário para a execução tanto do Assinador quanto do Simulador, caso o JDK não esteja presente na máquina do usuário.
 
-### Diagrama de Contexto (na perspectiva do assinador.jar)
+### Diagrama de Contexto
 
 ![](diagramas/imagens/contexto.svg)
 
@@ -34,7 +34,7 @@ O sistema é composto por duas aplicações que trabalham de forma integrada: a 
 
 ### Diagrama de Contêineres
 
-
+![](diagramas/imagens/conteineres.svg)
 
 **Comunicação entre Contêineres:**
 

@@ -28,7 +28,6 @@ Facilitar o acesso à funcionalidade de execução de aplicações Java via linh
 - [ ] O CLI deve invocar o Assinador com os parâmetros fornecidos
 - [ ] O CLI deve exibir o resultado da operação de forma legível
 
----
 
 ### US-02: Simular Assinatura Digital com Validação de Parâmetros
 
@@ -43,7 +42,6 @@ Facilitar o acesso à funcionalidade de execução de aplicações Java via linh
 - [ ] O Assinador deve suportar interação com dispositivo criptográfico (token/smart card) via interface PKCS#11
 - [ ] O Assinador deve retornar mensagens de erro claras quando parâmetros forem inválidos
 
----
 
 ### US-03: Gerenciar Ciclo de Vida do Simulador do HubSaúde
 
@@ -57,7 +55,6 @@ Facilitar o acesso à funcionalidade de execução de aplicações Java via linh
 - [ ] O CLI deve exibir o status atual do Simulador
 - [ ] O Simulador (simulador.jar) não faz parte do escopo de desenvolvimento deste sistema
 
----
 
 ### US-04: Provisionar JDK Automaticamente
 
@@ -71,7 +68,6 @@ Facilitar o acesso à funcionalidade de execução de aplicações Java via linh
 - [ ] O sistema deve configurar o JDK baixado para uso pelo Assinador e Simulador
 - [ ] O download deve funcionar nas três plataformas suportadas
 
----
 
 ### US-05: Disponibilizar Binários Multiplataforma
 
@@ -87,33 +83,8 @@ Facilitar o acesso à funcionalidade de execução de aplicações Java via linh
 - [ ] Incluir checksums SHA256 para verificação de integridade
 - [ ] Utilizar versionamento semântico (SemVer)
 
-## 4. Diagrama de Contexto
 
-![](diagramas/imagens/contexto.svg)
-
-**Atores e Sistemas Externos:**
-
-| Elemento | Tipo | Descrição |
-|----------|------|-----------|
-| Usuário | Ator | Pessoa que interage com o sistema via linha de comandos |
-| Dispositivo de Assinatura Digital | Sistema Externo | Hardware criptográfico (token USB, smart card) que armazena certificados e executa operações de assinatura |
-| Simulador do HubSaúde | Sistema Externo | Aplicação Web gerida pelo CLI e que responde a requisições de terceiros |
-
-## 5. Diagrama de Contêineres
-
-![](diagramas/imagens/conteineres.svg)
-
-**Comunicação entre contêineres:**
-
-| Origem | Destino | Protocolo | Descrição |
-|--------|---------|-----------|-----------|
-| Usuário | assinador  | CLI | Comandos de assinatura (criar, validar) digitados no terminal |
-| Usuário | simulador | CLI | Comandos de gerenciamento do simulador |
-| assinador | assinador.jar | chamada de método ou HTTP | Invocação direta ou requisição HTTP (conforme modo de execução) |
-| assinador.jar | Dispositivo Criptográfico | PKCS#11 | Interface padrão para comunicação com tokens e smart cards |
-| simulador | Simulador do HubSaúde | HTTP | Invoca e monitora o ciclo de vida do simulador |
-
-### 3.1. Aplicação assinatura
+### 4.1. Aplicação assinatura
 
 Interface via linha de comandos (console) para interação com usuários humanos.
 
@@ -129,7 +100,7 @@ Interface via linha de comandos (console) para interação com usuários humanos
 - Invocar a aplicação assinador.jar com os parâmetros
 - Apresentar resultados ao usuário de forma legível
 
-### 3.2. Aplicação assinador.jar
+### 4.2. Aplicação assinador.jar
 
 Aplicação Java que valida parâmetros de entrada e simula a criação e validação de assinaturas digitais.
 
@@ -150,7 +121,7 @@ Aplicação Java que valida parâmetros de entrada e simula a criação e valida
   - Para **validação de assinatura**: retornar indicação de sucesso ou falha no formato esperado
 - Garantir que todos os parâmetros estejam corretos antes de processar
 
-## 4. Funcionalidades
+## 5. Funcionalidades
 
 ### 5.1. Criar assinatura digital (simulação)
 
@@ -182,7 +153,7 @@ Aplicação Java que valida parâmetros de entrada e simula a criação e valida
 - Sucesso: Indicação se a assinatura é válida ou inválida (simulado)
 - Falha: Mensagem de erro indicando o problema
 
-## 5. Requisitos técnicos
+## 6. Requisitos técnicos
 
 ### 6.1. Aplicação assinatura
 
@@ -212,7 +183,7 @@ Aplicação Java que valida parâmetros de entrada e simula a criação e valida
 - RNF02: Deve ter tratamento robusto de erros
 - RNF03: Deve retornar resultados em formato estruturado
 
-## 6. Integração entre Aplicações
+## 7. Integração entre Aplicações
 
 ### 7.1. Fluxo de Criação de Assinatura
 
@@ -250,7 +221,7 @@ Em qualquer ponto do fluxo, erros devem ser:
 - Apresentados ao usuário de forma clara
 - Incluir informação suficiente para correção
 
-## 7. Parâmetros de entrada
+## 8. Parâmetros de entrada
 
 Os parâmetros para as operações de criação e validação de assinatura digital estão definidos de forma precisa nas especificações FHIR:
 
@@ -262,7 +233,7 @@ Os parâmetros para as operações de criação e validação de assinatura digi
 - **Referência**: https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-validar-assinatura.html
 - **Descrição**: define todos os parâmetros necessários para solicitar a validação de uma assinatura digital
 
-## 8. Escopo 
+## 9. Escopo 
 
 ### 9.1. O que ESTÁ no Escopo
 
@@ -286,7 +257,7 @@ Os parâmetros para as operações de criação e validação de assinatura digi
 - ❌ Autenticação de usuários
 - ❌ Geração real de certificados digitais
 
-## 9. Entregáveis
+## 10. Entregáveis
 
 Devem ser confeccionados e disponibilizado ao longo da disciplina
 no repositório correspondente (GitHub).
@@ -326,7 +297,7 @@ no repositório correspondente (GitHub).
    - Cada release deve conter checksums (SHA256) para verificação de integridade
    - Versionamento semântico (SemVer) para controle de releases
 
-## 10. Considerações de Implementação
+## 11. Considerações de Implementação
 
 ### 11.1. Simulação
 
@@ -335,7 +306,7 @@ Como o sistema **simula** operações de assinatura digital:
 - **Para validação**: Implemente lógica simples que sempre retorna um resultado pré-determinado (válido/inválido) baseado em critérios simples
 - **Foco na validação**: A maior parte do esforço deve estar em validar corretamente os parâmetros de entrada
 
-### 11.3. Padrões de Qualidade
+### 11.2. Padrões de Qualidade
 
 - Código limpo e bem organizado
 - Tratamento adequado de exceções
@@ -343,7 +314,7 @@ Como o sistema **simula** operações de assinatura digital:
 - Documentação clara
 - Mensagens de erro úteis
 
-## 11. Referências
+## 12. Referências
 
 1. **Especificações FHIR - Segurança**
    - [Caso de Uso: Criar Assinatura](https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-criar-assinatura.html)

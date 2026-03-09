@@ -22,26 +22,28 @@ Facilitar o acesso à funcionalidade de execução de aplicações Java via linh
 ### 4.1. O que ESTÁ no Escopo
 
 - ✅ Desenvolvimento da aplicação assinatura (CLI multiplataforma)
-- ✅ Desenvolvimento da aplicação assinador.jar
+- ✅ Desenvolvimento da aplicação assinador.jar (Java)
 - ✅ Integração entre as duas aplicações
-- ✅ Validação rigorosa de parâmetros
-- ✅ Simulação de criação de assinatura
-- ✅ Simulação de validação de assinatura
-- ✅ Tratamento de erros e exceções
-- ✅ Testes das funcionalidades
+- ✅ Validação rigorosa de parâmetros pelo assinador.jar
+- ✅ Simulação de criação de assinatura (assinador.jar)
+- ✅ Simulação de validação de assinatura (assinador.jar)
+- ✅ Tratamento de erros dos parâmetros e exceções (assinador.jar)
+- ✅ Testes 
 - ✅ Documentação de uso
 
 ### 4.2. O que NÃO ESTÁ no Escopo
 
 - ❌ Implementação real de assinatura digital criptográfica
+- ❌ Implementação real de validação de assinatura digital criptográfica
 - ❌ Integração com autoridades certificadoras
 - ❌ Armazenamento persistente de assinaturas
 - ❌ Interface gráfica (GUI - Graphical User Interface)
-- ❌ API web ou serviços REST
 - ❌ Autenticação de usuários
-- ❌ Geração real de certificados digitais
+- ❌ Geração de certificados digitais
 
-## 5. Requisitos do Sistema Runner
+## 5. Requisitos funcionais do Sistema Runner
+
+Os requisitos funcionais são expressos na forma de histórias de usuário (user stories).
 
 ### US-01: Invocar Assinador via CLI
 
@@ -68,6 +70,11 @@ Facilitar o acesso à funcionalidade de execução de aplicações Java via linh
 - [ ] O Assinador deve suportar interação com dispositivo criptográfico (token/smart card) via interface PKCS#11
 - [ ] O Assinador deve retornar mensagens de erro claras quando parâmetros forem inválidos
 
+
+
+**Modos de execução do Assinador:**
+- **Modo local (CLI)**: a aplicação é invocada diretamente via linha de comandos. Cada execução realiza o ciclo completo de inicialização da JVM e carga da aplicação (*cold start*), sendo adequado para execuções esporádicas ou scripts de automação.
+- **Modo servidor (HTTP)**: a aplicação é iniciada uma única vez e permanece em execução, aguardando requisições. Este modo elimina o overhead de inicialização nas chamadas subsequentes (*warm start*), oferecendo menor latência e maior throughput para cenários com múltiplas requisições.
 
 ### US-03: Gerenciar Ciclo de Vida do Simulador do HubSaúde
 
@@ -110,108 +117,9 @@ Facilitar o acesso à funcionalidade de execução de aplicações Java via linh
 - [ ] Utilizar versionamento semântico (SemVer)
 
 
-### 5.1. Aplicação assinatura
+## 6. Integração entre Aplicações
 
-Interface via linha de comandos (console) para interação com usuários humanos.
-
-**Características:**
-- Multiplataforma (Windows, Linux e macOS)
-- Interface de linha de comandos (CLI - Command Line Interface)
-- Integra-se com a aplicação assinador.jar
-- Fornece uma interface amigável para usuários humanos acessarem funcionalidades de assinatura digital
-
-**Responsabilidades:**
-- Receber comandos do usuário
-- Validar consistência sintática dos parâmetros de entrada do usuário
-- Invocar a aplicação assinador.jar com os parâmetros
-- Apresentar resultados ao usuário de forma legível
-
-### 5.2. Aplicação assinador.jar
-
-Aplicação Java que valida parâmetros de entrada e simula a criação e validação de assinaturas digitais.
-
-**Características:**
-- Implementada em Java (arquivo .jar)
-- Não realiza assinatura digital real (nem cria nem valida, apenas simula)
-- Valida parâmetros de entrada
-- Retorna respostas pré-construídas
-- Suporta dois modos de execução:
-  - **Modo local (CLI)**: a aplicação é invocada diretamente via linha de comandos. Cada execução realiza o ciclo completo de inicialização da JVM e carga da aplicação (*cold start*), sendo adequado para execuções esporádicas ou scripts de automação.
-  - **Modo servidor (HTTP)**: a aplicação é iniciada uma única vez e permanece em execução, aguardando requisições. Este modo elimina o overhead de inicialização nas chamadas subsequentes (*warm start*), oferecendo menor latência e maior throughput para cenários com múltiplas requisições.
-
-**Responsabilidades:**
-- Validar parâmetros recebidos para operações de criação e validação de assinatura
-- Reagir corretamente na presença de falhas (parâmetros inválidos)
-- Em caso de sucesso na validação:
-  - Para **criação de assinatura**: retornar uma assinatura previamente construída (simulada)
-  - Para **validação de assinatura**: retornar indicação de sucesso ou falha no formato esperado
-- Garantir que todos os parâmetros estejam corretos antes de processar
-
-## 6. Funcionalidades
-
-### 6.1. Criar assinatura digital (simulação)
-
-**Entrada:**
-- Referência: [caso-de-uso-criar-assinatura.html](https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-criar-assinatura.html)
-
-**Processamento:**
-1. Validar todos os parâmetros recebidos
-2. Verificar formato e completude dos dados
-3. Se válido: retornar assinatura pré-construída
-4. Se inválido: retornar mensagem de erro apropriada
-
-**Saída:**
-- Sucesso: assinatura digital simulada (pré-construída)
-- Falha: mensagem de erro indicando o problema
-
-### 6.2. Validar assinatura digital (simulação)
-
-**Entrada:**
-- Referência: [caso-de-uso-validar-assinatura.html](https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-validar-assinatura.html)
-
-**Processamento:**
-1. Validar todos os parâmetros recebidos
-2. Verificar formato da assinatura e dados associados
-3. Se válido: retornar resultado simulado (sucesso/falha)
-4. Se inválido: retornar mensagem de erro apropriada
-
-**Saída:**
-- Sucesso: Indicação se a assinatura é válida ou inválida (simulado)
-- Falha: Mensagem de erro indicando o problema
-
-## 7. Requisitos técnicos
-
-### 7.1. Aplicação assinatura
-
-**Requisitos funcionais:**
-- RF01: Deve funcionar em Windows, Linux e macOS
-- RF02: Deve fornecer interface via linha de comandos
-- RF03: Deve validar entrada do usuário antes de invocar assinador.jar
-- RF04: Deve apresentar resultados de forma legível ao usuário
-- RF05: Deve tratar erros e apresentar mensagens apropriadas
-
-**Requisitos não-funcionais:**
-- RNF01: Deve ser fácil de instalar e executar
-- RNF02: Deve ter documentação clara de uso
-- RNF03: Mensagens de erro devem ser claras e acionáveis
-
-### 7.2. Aplicação assinador.jar
-
-**Requisitos funcionais:**
-- RF01: Deve validar rigorosamente todos os parâmetros de entrada
-- RF02: Deve implementar operação de criação de assinatura (simulada)
-- RF03: Deve implementar operação de validação de assinatura (simulada)
-- RF04: Deve retornar erros claros quando parâmetros são inválidos
-- RF05: Deve seguir as especificações FHIR para parâmetros
-
-**Requisitos não-funcionais:**
-- RNF01: Deve ser executável em qualquer sistema com JVM
-- RNF02: Deve ter tratamento robusto de erros
-- RNF03: Deve retornar resultados em formato estruturado
-
-## 8. Integração entre Aplicações
-
-### 8.1. Fluxo de Criação de Assinatura
+### 6.1. Fluxo de Criação de Assinatura
 
 ```
 Usuário → assinatura → assinador.jar → assinatura → Usuário
@@ -225,7 +133,7 @@ Usuário → assinatura → assinador.jar → assinatura → Usuário
 7. assinatura: apresenta ao usuário
 ```
 
-### 8.2. Fluxo de Validação de Assinatura
+### 6.2. Fluxo de Validação de Assinatura
 
 ```
 Usuário → assinatura → assinador.jar → assinatura → Usuário
@@ -239,7 +147,7 @@ Usuário → assinatura → assinador.jar → assinatura → Usuário
 7. assinatura: apresenta ao usuário
 ```
 
-### 8.3. Tratamento de erros
+### 6.3. Tratamento de erros
 
 Em qualquer ponto do fluxo, erros devem ser:
 - Capturados apropriadamente
@@ -247,19 +155,7 @@ Em qualquer ponto do fluxo, erros devem ser:
 - Apresentados ao usuário de forma clara
 - Incluir informação suficiente para correção
 
-## 9. Parâmetros de entrada
-
-Os parâmetros para as operações de criação e validação de assinatura digital estão definidos de forma precisa nas especificações FHIR:
-
-### 9.1. Parâmetros para criar Assinatura
-- **Referência**: https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-criar-assinatura.html
-- **Descrição**: define todos os parâmetros necessários para solicitar a criação de uma assinatura digital
-
-### 9.2. Parâmetros para validar Assinatura
-- **Referência**: https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-validar-assinatura.html
-- **Descrição**: define todos os parâmetros necessários para solicitar a validação de uma assinatura digital
-
-## 10. Entregáveis
+## 7. Entregáveis
 
 Devem ser confeccionados e disponibilizado ao longo da disciplina
 no repositório correspondente (GitHub).
@@ -299,16 +195,16 @@ no repositório correspondente (GitHub).
    - Cada release deve conter checksums (SHA256) para verificação de integridade
    - Versionamento semântico (SemVer) para controle de releases
 
-## 11. Considerações de Implementação
+## 8. Considerações de Implementação
 
-### 11.1. Simulação
+### 8.1. Simulação
 
 Como o sistema **simula** operações de assinatura digital:
 - **Para criação**: Prepare assinaturas de exemplo pré-construídas que podem ser retornadas quando os parâmetros são válidos
 - **Para validação**: Implemente lógica simples que sempre retorna um resultado pré-determinado (válido/inválido) baseado em critérios simples
 - **Foco na validação**: A maior parte do esforço deve estar em validar corretamente os parâmetros de entrada
 
-### 11.2. Padrões de Qualidade
+### 8.2. Padrões de Qualidade
 
 - Código limpo e bem organizado
 - Tratamento adequado de exceções
@@ -316,7 +212,7 @@ Como o sistema **simula** operações de assinatura digital:
 - Documentação clara
 - Mensagens de erro úteis
 
-## 12. Referências
+## 9. Referências
 
 1. **Especificações FHIR - Segurança**
    - [Caso de Uso: Criar Assinatura](https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-criar-assinatura.html)

@@ -5,7 +5,7 @@ Especificação do trabalho prático da disciplina Implementação e Integraçã
 - [Especificação](especificacao.md)
 - [Design](design.md)
 
-# O que está rolando...
+# O que está rolando... (desde 10/03/2026)
 
 - No primeiro encontra a [especificação](https://github.com/kyriosdata/runner/blob/v0.0.1/contexto.md) continha, por exemplo, requisitos sendo tratados como objetivos específicos, logo no início. Isso tinha que mudar. Na versão [melhorada](https://github.com/kyriosdata/runner/blob/v0.0.2/contexto.md), as seções foram alteradas e requisitos foram definidos na forma de user stories.
 
@@ -16,3 +16,5 @@ Especificação do trabalho prático da disciplina Implementação e Integraçã
 - Apesar dos critérios, ainda não há uma definição clara de "done" para cada requisito, o que é fundamental. Esta definição de "done" é chamada, muitas vezes, de DoD (Definition of Done). Não ter ainda esta definição é natural, pois os requisitos ainda não atendem ao DoR (Definition of Ready), ou seja, ainda não estão prontos, conforme já mencionado.
 
 - Quando olhamos para o [documento](https://github.com/kyyriosdata/runner/blob/v0.0.2/contexto.md), vemos que ele reúne requisitos e design. Em consequência, vamos dividir isso em dois documentos na v0.0.3. 
+
+- Em tempo, conforme o SWEBOK, o que é considerado construção depende do modelo de ciclo de vida adotado, por exemplo, em modelos mais lineares, construção é precedida por requisitos e design, e sucedida por testes. Embora em muitos casos inclua codificação e depuração, também envolve planejamento, projeto detalhado, testes de unidade e testes de integração. 

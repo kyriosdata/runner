@@ -6,6 +6,10 @@ Especificação do trabalho prático da disciplina Implementação e Integraçã
 - [Design](design.md)
 - Forneça o seu nome e o repositorio no github usado exclusivamente para o registro das atividades da disciplina na [planilha](https://docs.google.com/spreadsheets/d/1sfYDNnBnBCWHJvyM-Lk8g2DQpvrXalRi1dLH4LL5uHU/edit?gid=0#gid=0). Se grupo, máximo de 2 membros, repita a URL do repositório.
 
+# O que está rolando... (desde 11/03/2026)
+
+- O Princípio de Kerckhoffs diz que: "um sistema criptográfico deve permanecer seguro mesmo que tudo sobre o sistema seja público, exceto a chave privada".
+
 # O que está rolando... (desde 10/03/2026)
 
 - No primeiro encontra a [especificação](https://github.com/kyriosdata/runner/blob/v0.0.1/contexto.md) continha, por exemplo, requisitos sendo tratados como objetivos específicos, logo no início. Isso tinha que mudar. Na versão [melhorada](https://github.com/kyriosdata/runner/blob/v0.0.2/contexto.md), as seções foram alteradas e requisitos foram definidos na forma de user stories.

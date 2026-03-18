@@ -1,9 +1,14 @@
 # Sistema Runner
 
-Especificação do trabalho prático da disciplina Implementação e Integração (2026-01)
+Especificação do trabalho prático da disciplina Implementação e Integração (2026-01). Esta é a orientação para o que precisa ser feito:
 
 - [Especificação](especificacao.md)
 - [Design](design.md)
+
+# O que está rolando... (desde 18/03/2026)
+
+- Agora é o momento do planejamento da construção, ou pelo menos da primeira iteração. O que você vai fazer?
+- Veja [aqui](./docs/planejamento.md) alguma orientação.
 
 # O que está rolando... (desde 11/03/2026)
 

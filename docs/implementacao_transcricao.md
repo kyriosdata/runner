@@ -1,5 +1,5 @@
 # Transcrição da Imagem de Implementação
-*(Referente ao arquivo `implementacao.jpeg`)*
+*(Referente ao arquivo `implementacao.png`)*
 
 ## Diagrama Principal
 `[ MC ] <--- PICS#11 ---> [ JAVA ]`

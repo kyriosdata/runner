@@ -5,6 +5,14 @@ Especificação do trabalho prático da disciplina Implementação e Integraçã
 - [Especificação](especificacao.md)
 - [Design](design.md)
 
+# Um plano preliminar de implementação...
+
+Assumindo que os requisitos estão compreendidos (suposição provavelmente falsa) e que o projeto fornecido são suficientes para orientar a implementação, temos uma especulação inicial ([brainstorming](./docs/implementacao_transcricao.md)). Uma revisão segue abaixo com algumas 
+especulações feitas em sala de aula:
+
+- Para implementar os CLIs uma opção que oferece _cross-compiling_ nativo é a linguagem Go.
+- 
+
 # O que está rolando... (desde 18/03/2026)
 
 - Agora é o momento do planejamento da construção, ou pelo menos da primeira iteração. O que você vai fazer?

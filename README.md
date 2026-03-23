@@ -11,7 +11,29 @@ Assumindo que os requisitos estão compreendidos (suposição provavelmente fals
 especulações feitas em sala de aula:
 
 - Para implementar os CLIs uma opção que oferece _cross-compiling_ nativo é a linguagem Go.
-- 
+- A lista fornecida é um esforço de compreensão inicial do que deve ser feito. A ordem provavelmente será outra. Não há nenhum compromisso com a ordem (por enquanto).
+  
+Na ordem trabalhada:
+
+1. Compreender o contexto do que deve ser produzido.
+   1. Temos 2 CLIs e uma aplicação Java a ser construída. 
+   2. A aplicação Java interage com dispositivos criptográfico (PKCS#11). Isso exige integração com biblioteca que faz a ponte entre Java e o dispositivo. Ou seja, usar SunPKCS11 (bridge) como "ponte" entre a aplicação Java e a biblioteca nativa do dispositivo. Observe que o dispositivo em si não está disponível, mas sim a biblioteca nativa dele (driver do fabricante) a partir da qual, de fato, o dispositivo é acessado. 
+   3. A outra função da aplicação é validar os parâmetros de entrada. Naturalmente, precisam ser investigados e definidos. A definição deve ser sucedida por _design_ de interação com o usuário, apesar de CLI, é preciso projetar as opções. Veja tarefa abaixo incluída para esta finalidade.
+   4. Para a simulação, assuma a existência da interface `SignatureService` com os métodos:
+      - `sign(String message, String privateKey)`
+      - `validate(String message, String signature, String publicKey)`
+      - Parâmetros ainda são desconhecidos. Ou seja, acima tem apenas um "rumo". Por exemplo, quando se usa dispositivo criptográfico, não há "chave privada" acessível, conforme é suposto na assinatura deste método.
+   5. Na figura (foto tirada), há um MC de Material Criptográfico, por exemplo, usb token ou smartcard, noutras palavras, o dispositivo físico onde se encontra a chave privada de certificado ICP-Brasil do tipo A3. Em tempo, esta chave "nunca" sai do dispositivo. Cada fabricante possui um "driver" de acesso ao MC, acessível de forma padronizada por uma biblioteca Java amplamente empregada, a SunPKCS11. Desta forma, esta biblioteca que acompanha o JDK é como a API JDBC, enquanto cada driver de um fornecedor seria o driver do Oracle, MySQL e assim por diante. Ou seja, uma estratégia recorrente.
+2. Entradas e saídas deverão ser investigadas. Quais são os itens de dados de entrada? Quais os de saída? Como fornecê-los adequadamente? Lista de parâmetros (linha de comandos com flags, arquivos JSON ou outro, ou combinação)?
+3. Protótipo Go (tenho insegurança sobre como fazer o que precisa ser feito pelo CLI em Go).
+   1. Como lidar com parâmetros (cli)?
+   2. Como iniciar processos em Go? (a aplicação em Java precisa ser iniciada e acompanhada)
+   3. Como efetuar requisições via http (versão server do assinador)?
+   4. Provavelmente todas estas operações podem ser produzidas por Modelo de IA corrente sem tanto esforço, contudo, é preciso um projeto adequado que admita testes.
+4. Simulador. A implementação da interface `SignatureService` é o próprio processo de simulação. Sugestão de classe fake para implementar esta interface: `FakeSignatureService`.  
+5. A interface da foto é substituída aqui por `SignatureService` conforme acima. 
+6. O modo server é melhor descrito como uma aplicação web, que oferece endpoints para assinatura e validação de documentos. Ou seja, é necessário um controller `SignatureController` com a definição dos endpoints. Na foto são definidos `/sign` e `/validate`.
+     
 
 # O que está rolando... (desde 18/03/2026)
 

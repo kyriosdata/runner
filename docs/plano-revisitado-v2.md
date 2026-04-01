@@ -47,10 +47,10 @@
 **para que** binários atualizados estejam sempre disponíveis após cada mudança.
 
 **Critérios de aceitação:**
-- [ ] GitHub Actions configurado com workflow de build
-- [ ] Cross-compilation para `windows/amd64`, `linux/amd64` e `darwin/amd64`
-- [ ] Build executado a cada push na branch principal
-- [ ] Artefatos de build disponíveis como artifacts do workflow
+- [x] GitHub Actions configurado com workflow de build
+- [x] Cross-compilation para `windows/amd64`, `linux/amd64` e `darwin/amd64`
+- [x] Build executado a cada push na branch principal
+- [x] Artefatos de build disponíveis como artifacts do workflow
 
 ### US-05.2 — Publicação de releases com versionamento semântico
 

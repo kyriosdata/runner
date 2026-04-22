@@ -5,6 +5,7 @@ Especificação do trabalho prático da disciplina Implementação e Integraçã
 - [Especificação](especificacao.md)
 - [Design](design.md)
 - [Plano de implementação](docs/plano-revisitado-v2.md)
+- [Sprint 1](./docs/sprint-1-tasks.md)
 
 # O que está acontecendo... 
 

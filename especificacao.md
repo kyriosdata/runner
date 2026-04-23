@@ -92,9 +92,9 @@ Os requisitos funcionais são expressos na forma de histórias de usuário (user
 **Critérios de aceitação:**
 - [ ] O CLI deve verificar se a porta padrão, empregada pelo Simulador, 8443, está disponível antes de tentar iniciá-lo.
 - [ ] O CLI deve permitir iniciar o Simulador.
-- [ ] O CLI deve permitir parar o Simulador.
-- [ ] O CLI deve exibir o status atual do Simulador (ou que não está em execução)
-- [ ] O Simulador deve ser obtido dinamicamente pelo CLI, baixando a versão mais recente disponível no repositório da disciplina (GitHub Releases).
+- [ ] O CLI deve permitir parar o Simulador (endpoint /shutdown).
+- [ ] O CLI deve exibir o status atual do Simulador (ou que não está em execução). O status pode ser obtido via endpoint /api/info.
+- [ ] O Simulador (simulador.jar) deve ser obtido dinamicamente pelo CLI, baixando a versão mais recente disponível no repositório da disciplina (GitHub Releases).
 - [ ] O CLI não deve baixar o Simulador (simulador.jar) se a versão mais recente já estiver disponível localmente.
 
 

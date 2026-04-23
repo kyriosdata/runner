@@ -99,7 +99,7 @@ Os requisitos funcionais são expressos na forma de histórias de usuário (user
 - [ ] O CLI não deve baixar o Simulador (simulador.jar) se a versão mais recente já estiver disponível localmente.
 
 Uma estratégia:
-- Busca release.json (URL fixa e conhecida) no próprio repositório (branch main).
+- Busca release.json (URL fixa e conhecida) no próprio repositório (branch main) via url estável `https://raw.githubusercontent.com/{owner}/{repo}/main/release.json`
 - Compara versões com o que está instalado localmente
 - Baixa apenas o que mudou
 

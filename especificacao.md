@@ -95,8 +95,27 @@ Os requisitos funcionais são expressos na forma de histórias de usuário (user
 - [ ] O CLI deve permitir parar o Simulador (endpoint /shutdown).
 - [ ] O CLI deve exibir o status atual do Simulador (ou que não está em execução). O status pode ser obtido via endpoint /api/info.
 - [ ] O Simulador (simulador.jar) deve ser obtido dinamicamente pelo CLI, baixando a versão mais recente disponível no repositório da disciplina (GitHub Releases).
+- [ ] O CLI deve baixar o JRE caso não esteja disponível no diretório .hubsaude a partir do Eclipse Temurin (Adoptium).
 - [ ] O CLI não deve baixar o Simulador (simulador.jar) se a versão mais recente já estiver disponível localmente.
 
+Uma estratégia:
+- Busca release.json (URL fixa e conhecida) no próprio repositório (branch main).
+- Compara versões com o que está instalado localmente
+- Baixa apenas o que mudou
+
+```json
+{
+  "jar": {
+    "url": "https://github.com/kyriosdata/assinador/releases/latest/download/assinador.jar",
+    "version": "1.2.0"
+  },
+  "jre": {
+    "windows_x64": "https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jre/hotspot/normal/eclipse",
+    "linux_x64":   "https://api.adoptium.net/v3/binary/latest/21/ga/linux/x64/jre/hotspot/normal/eclipse",
+    "mac_x64":     "https://api.adoptium.net/v3/binary/latest/21/ga/mac/x64/jre/hotspot/normal/eclipse"
+  }
+}
+```
 
 ### US-04: Provisionar JDK Automaticamente
 

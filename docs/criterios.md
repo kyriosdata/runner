@@ -63,6 +63,10 @@ Avaliados como comportamento observável, não como "código existe".
 ### E4. Simulador do HubSaúde
 - Ciclo de vida (start/stop/status) com *health check* e *readiness*; não confundir "processo subiu" com "pronto para receber requisição".
 
+### E5. Simulador PKCS11
+
+- Testes de integração que comprovam que o simulador responde a chamadas PKCS11 reais.
+
 ### E6. Portabilidade real
 
 - Funciona em Windows e Linux comprovado em CI.

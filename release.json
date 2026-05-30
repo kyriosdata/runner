@@ -1,0 +1,19 @@
+{
+  "validador": {
+    "url": "https://github.com/kyriosdata/runner/releases/download/hubsaude-validador-api-v0.1.8/hubsaude-validador-api-0.1.8-exec.jar",
+    "version": "0.1.8",
+    "tag": "hubsaude-validador-api-v0.1.8",
+    "sha256": "0dab9943629f5b1f9064e4302b380ecfbaa0e4da2b991e8b66e9795d5665607a"
+  },
+  "simulador": {
+    "url": "https://github.com/kyriosdata/runner/releases/download/v0.0.2/hubsaude-simulador-0.0.0-SNAPSHOT.jar",
+    "version": "0.0.2",
+    "tag": "v0.0.2",
+    "sha256": "4a86602d47c5fc79e7b4761c6b82effbfac5eaee01d8ecf85f93a65e143e919b"
+  },
+  "jre": {
+    "windows_x64": "https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jre/hotspot/normal/eclipse",
+    "linux_x64": "https://api.adoptium.net/v3/binary/latest/21/ga/linux/x64/jre/hotspot/normal/eclipse",
+    "mac_x64": "https://api.adoptium.net/v3/binary/latest/21/ga/mac/x64/jre/hotspot/normal/eclipse"
+  }
+}

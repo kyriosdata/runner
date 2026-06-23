@@ -1,3 +1,6 @@
+﻿# Copyright (c) 2026 SES-GO / UFG
+# Todos os direitos reservados.
+
 <#
 .SYNOPSIS
   Instalador do hubsaude-cli para Windows.
@@ -28,6 +31,7 @@
 [CmdletBinding()]
 param(
   [string]$Version = $env:HUBSAUDE_CLI_VERSION,
+  [Alias('bin-dir')]
   [string]$BinDir  = $env:HUBSAUDE_CLI_BIN_DIR,
   [switch]$Help
 )
@@ -48,7 +52,7 @@ $BinName   = 'hubsaude.exe'
 function Write-Info($m) { Write-Host "[i] $m"  -ForegroundColor Cyan }
 function Write-Ok($m)   { Write-Host "[ok] $m" -ForegroundColor Green }
 function Write-Warn($m) { Write-Host "[!] $m"  -ForegroundColor Yellow }
-function Die($m)        { Write-Host "[x] $m"  -ForegroundColor Red; exit 1 }
+function Die($m)        { [Console]::Error.WriteLine("[x] $m"); exit 1 }
 
 if ($Help) {
   @"

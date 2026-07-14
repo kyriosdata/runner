@@ -18,5 +18,11 @@
     "linux_arm64": "https://api.adoptium.net/v3/binary/latest/21/ga/linux/aarch64/jre/hotspot/normal/eclipse",
     "mac_x64": "https://api.adoptium.net/v3/binary/latest/21/ga/mac/x64/jre/hotspot/normal/eclipse",
     "mac_arm64": "https://api.adoptium.net/v3/binary/latest/21/ga/mac/aarch64/jre/hotspot/normal/eclipse"
+  },
+  "server": {
+    "url": "https://github.com/kyriosdata/runner/releases/download/hubsaude-fhir-server-v8.10.0/hubsaude-fhir-server-8.10.0.war",
+    "version": "8.10.0",
+    "tag": "hubsaude-fhir-server-v8.10.0",
+    "sha256": "af304b34d917f2659a454fe57e9df475b6c3cde17990a055b2d96cd52073f75f"
   }
 }

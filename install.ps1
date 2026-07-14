@@ -49,9 +49,9 @@ $DlBase    = if ($env:GITHUB_DOWNLOAD_URL)   { $env:GITHUB_DOWNLOAD_URL }   else
 $TagPrefix = 'hubsaude-cli-v'
 $BinName   = 'hubsaude.exe'
 
-function Write-Info($m) { Write-Host "[i] $m"  -ForegroundColor Cyan }
-function Write-Ok($m)   { Write-Host "[ok] $m" -ForegroundColor Green }
-function Write-Warn($m) { Write-Host "[!] $m"  -ForegroundColor Yellow }
+function Write-Info($m) { [Console]::Error.WriteLine("[i] $m") }
+function Write-Ok($m)   { [Console]::Error.WriteLine("[ok] $m") }
+function Write-Warn($m) { [Console]::Error.WriteLine("[!] $m") }
 function Die($m)        { [Console]::Error.WriteLine("[x] $m"); exit 1 }
 
 if ($Help) {

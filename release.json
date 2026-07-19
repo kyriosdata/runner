@@ -6,10 +6,10 @@
     "sha256": "c21726483dab24933a29784bb36d5adefb309e227e170ebbb04d226dbd671440"
   },
   "simulador": {
-    "url": "https://github.com/kyriosdata/runner/releases/download/hubsaude-simulador-v0.1.24/hubsaude-simulador-0.1.24.jar",
-    "version": "0.1.24",
-    "tag": "hubsaude-simulador-v0.1.24",
-    "sha256": "12c8273ec1483dcb262bbc5f989a17f85969e2e0b8872e2b2eef31b37641d7c6"
+    "url": "https://github.com/kyriosdata/runner/releases/download/hubsaude-simulador-v0.1.25/hubsaude-simulador-0.1.25.jar",
+    "version": "0.1.25",
+    "tag": "hubsaude-simulador-v0.1.25",
+    "sha256": "332c398e7c8ba976d26e0f71ef412ac6da66c208fc22b9a0ca5c30d4cc93e918"
   },
   "jre": {
     "windows_x64": "https://api.adoptium.net/v3/binary/latest/21/ga/windows/x64/jre/hotspot/normal/eclipse",
